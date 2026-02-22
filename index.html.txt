@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMilk Market — магазин и оформление</title>
+
+  <!--
+  Проект: FreshMilk Market
+  Описание: Интернет-магазин молочных продуктов (1 HTML файл)
+  Автор: ВПИШИ СВОЁ ИМЯ
+  Год: 2026
+  -->
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --text:#eaf0ff;
+      --muted:#a9b5d6;
+      --brand:#4de3b7;
+      --brand2:#6aa8ff;
+      --danger:#ff5c7a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --stroke: rgba(255,255,255,.10);
+      --glass: rgba(7,12,22,.55);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(106,168,255,.18), transparent 55%),
+                  radial-gradient(1000px 600px at 80% 20%, rgba(77,227,183,.14), transparent 55%),
+                  linear-gradient(180deg, #070c16, var(--bg) 35%, #070c16);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1100px, 92vw); margin-inline:auto; padding: 18px 0 40px;}
+
+    header{
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(14px);
+      background: var(--glass);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding: 14px 0;
+    }
+    .brand{display:flex; align-items:center; gap:10px;}
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(77,227,183,.95), rgba(106,168,255,.95));
+      box-shadow: 0 8px 22px rgba(77,227,183,.18);
+    }
+    .brand h1{font-size:16px;margin:0;line-height:1.1}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+    .rightBar{display:flex; align-items:center; gap:10px;}
+
+    .btn{
+      cursor:pointer; user-select:none;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      font-weight: 700;
+    }
+    .btn:hover{background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18)}
+    .btn:active{transform: scale(.98)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(77,227,183,.95), rgba(106,168,255,.92));
+      border-color: transparent;
+      color:#051022;
+      font-weight: 900;
+    }
+    .btn.danger{
+      background: rgba(255,92,122,.12);
+      border-color: rgba(255,92,122,.35);
+      color:#ffd6de;
+    }
+    .btn.tab[aria-current="page"]{
+      border-color: rgba(77,227,183,.45);
+      background: rgba(77,227,183,.12);
+    }
+
+    .cartBtn{position: relative; display:flex; align-items:center; gap:8px;}
+    .badge{
+      position:absolute; top:-8px; right:-8px;
+      min-width: 18px; height: 18px; padding: 0 6px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius: 999px;
+      background: var(--danger);
+      color: white; font-size: 12px; font-weight: 900;
+      border: 2px solid rgba(7,12,22,.9);
+    }
+
+    .hero{
+      margin-top: 18px; padding: 22px; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      position: relative; overflow:hidden;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:-80px -80px auto auto;
+      width: 220px; height: 220px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(77,227,183,.35), transparent 65%);
+    }
+    .hero h2{margin: 0 0 8px; font-size: clamp(18px, 2.2vw, 28px);}
+    .hero p{margin:0; color: var(--muted); max-width: 70ch; line-height: 1.5;}
+
+    .sectionTitle{
+      margin: 22px 0 10px;
+      display:flex; align-items:flex-end; justify-content: space-between; gap: 12px;
+    }
+    .sectionTitle h3{margin:0;font-size: 18px}
+    .sectionTitle small{color:var(--muted)}
+
+    /* Shop grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 16px 26px rgba(0,0,0,.32);
+      border-color: rgba(255,255,255,.18);
+    }
+    .thumb{aspect-ratio: 4 / 3; width:100%; background:#0a1327; border-bottom: 1px solid rgba(255,255,255,.08); position:relative; overflow:hidden;}
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+    .thumb .tag{
+      position:absolute; left:12px; top:12px;
+      padding:6px 10px; border-radius:999px; font-size:12px;
+      background: rgba(7,12,22,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+    }
+    .content{padding:12px 12px 14px; display:flex; flex-direction:column; gap:10px; flex:1;}
+    .content h4{margin:0; font-size:15px;}
+    .content p{margin:0; color:var(--muted); font-size:12.5px; line-height:1.4; min-height:36px;}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .price{font-weight: 900;}
+    .meta{color: rgba(233,240,255,.65); font-size:12px;}
+
+    /* Panels */
+    .panel{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    /* Checkout layout */
+    .layout{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .item{
+      display:grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 10px;
+      align-items:center;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 10px;
+    }
+    .item img{
+      width:56px;height:56px;border-radius: 14px;object-fit: cover;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .title{font-weight:900; font-size:13px; margin:0}
+    .sub{color:var(--muted); font-size:12px; margin:2px 0 0}
+    .right{font-weight:900}
+
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;}
+    label{display:block; font-size:12px; color: rgba(233,240,255,.75); margin-bottom:6px;}
+    input, textarea, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{min-height: 92px; resize: vertical;}
+    .full{grid-column: 1 / -1;}
+    .sumRow{display:flex; align-items:center; justify-content:space-between; color: var(--muted); font-size:13px; margin-top:8px;}
+    .sumRow strong{color: var(--text); font-size:16px}
+    .actionsRow{display:flex; gap:10px; margin-top:12px;}
+    .actionsRow .btn{flex:1}
+
+    /* Drawer cart */
+    .overlay{position: fixed; inset:0; background: rgba(0,0,0,.55); display:none; z-index:50;}
+    .overlay.show{display:block}
+    .drawer{
+      position: fixed; top:0; right:0;
+      width: min(420px, 92vw); height:100%;
+      background: linear-gradient(180deg, rgba(15,27,51,.98), rgba(12,21,41,.98));
+      border-left: 1px solid var(--stroke);
+      box-shadow: -20px 0 50px rgba(0,0,0,.5);
+      transform: translateX(110%);
+      transition: transform .22s ease;
+      z-index:60;
+      display:flex; flex-direction:column;
+    }
+    .drawer.show{transform: translateX(0)}
+    .drawerHeader{
+      padding:14px 14px 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .drawerHeader h3{margin:0;font-size:16px}
+    .drawerBody{padding:12px 14px; overflow:auto; flex:1;}
+    .cartItem{
+      display:grid;
+      grid-template-columns: 56px 1fr auto;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      margin-bottom:10px;
+    }
+    .cartItem img{width:56px;height:56px;border-radius:14px;object-fit:cover;border:1px solid rgba(255,255,255,.08)}
+    .ciTitle{font-weight:900;font-size:13px;margin:0}
+    .ciSub{color:var(--muted);font-size:12px;margin:2px 0 0}
+    .qty{display:flex; align-items:center; gap:6px; justify-content:flex-end;}
+    .qty button{
+      width:30px;height:30px;border-radius:10px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .08s ease, background .15s ease;
+    }
+    .qty button:active{transform: scale(.96)}
+    .qty span{min-width:18px; text-align:center; font-weight:900}
+
+    .drawerFooter{
+      padding:12px 14px 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .footerBtns{display:flex; gap:10px}
+    .footerBtns .btn{flex:1}
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(7,12,22,.85);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 80;
+      font-size: 13px;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0);}
+
+    /* Pages */
+    .page{display:none}
+    .page.show{display:block}
+
+    /* Responsive */
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 900px){ .layout{grid-template-columns: 1fr;} }
+    @media (max-width: 720px){ .grid{grid-template-columns: 1fr;} }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>FreshMilk Market</h1>
+          <p id="subtitle">Свежие молочные продукты каждый день</p>
+        </div>
+      </div>
+
+      <div class="rightBar">
+        <button class="btn tab" id="tabShop" type="button">🧺 Магазин</button>
+        <button class="btn tab" id="tabCheckout" type="button">📦 Оформление</button>
+
+        <button class="btn cartBtn" id="openCartBtn" type="button">
+          🛒 Корзина
+          <span class="badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- SHOP PAGE -->
+  <section class="page" id="pageShop">
+    <section class="hero">
+      <h2>Натуральные молочные продукты для дома и кухни</h2>
+      <p>Добавляй товары в корзину и переходи в “Оформление” — всё внутри одного файла.</p>
+    </section>
+
+    <div class="sectionTitle">
+      <h3>🧺 Товары</h3>
+      <small id="resultInfo">Показано: 9</small>
+    </div>
+
+    <section class="grid" id="productGrid" aria-label="Список товаров"></section>
+
+    <div class="sectionTitle" style="margin-top:26px;">
+      <h3>❓ FAQ</h3>
+      <small>Часто задаваемые вопросы</small>
+    </div>
+
+    <section class="panel">
+      <details>
+        <summary><strong>Откуда поступают ваши молочные продукты?</strong></summary>
+        <p>Мы работаем с проверенными производителями и поставщиками, которые соблюдают стандарты качества и хранения.</p>
+      </details>
+      <details>
+        <summary><strong>Насколько свежими доставляются товары?</strong></summary>
+        <p>Продукты хранятся и доставляются с соблюдением температурного режима, чтобы сохранять свежесть и вкус.</p>
+      </details>
+      <details>
+        <summary><strong>Как хранить продукцию после доставки?</strong></summary>
+        <p>Рекомендуем хранить в холодильнике при температуре +2…+6 °C и употребить до даты на упаковке.</p>
+      </details>
+      <details>
+        <summary><strong>Можно ли выбрать время доставки?</strong></summary>
+        <p>Да, при оформлении заказа можно выбрать удобный интервал доставки.</p>
+      </details>
+      <details>
+        <summary><strong>Что делать, если товар повреждён?</strong></summary>
+        <p>Свяжитесь с поддержкой в течение 24 часов — мы заменим товар или вернём деньги.</p>
+      </details>
+    </section>
+
+    <div class="sectionTitle" style="margin-top:26px;">
+      <h3>🏪 О магазине</h3>
+      <small>Контакты</small>
+    </div>
+
+    <section class="panel">
+      <p style="margin:0 0 10px;color:var(--muted);line-height:1.5;">
+        <strong style="color:var(--text);">FreshMilk Market</strong> — интернет-магазин свежих молочных продуктов.
+        <br><br>
+        <strong style="color:var(--text);">Наша миссия:</strong>
+        обеспечивать семьи свежими, качественными и безопасными молочными продуктами, делая полезное питание удобным и доступным каждый день.
+      </p>
+      <p style="margin:0;color:var(--muted);line-height:1.6;">
+        <strong style="color:var(--text);">Телефон:</strong> +7 (700) 123-45-67<br/>
+        <strong style="color:var(--text);">E-mail:</strong> info@freshmilkmarket.kz
+      </p>
+    </section>
+
+    <footer style="text-align:center;color:rgba(233,240,255,.55);padding:18px 0 0;">
+      © 2026 FreshMilk Market
+    </footer>
+  </section>
+
+  <!-- CHECKOUT PAGE -->
+  <section class="page" id="pageCheckout">
+    <div class="layout">
+      <section class="panel">
+        <h2 style="margin:0 0 10px;font-size:18px;">🧺 Ваш заказ</h2>
+        <div style="color:var(--muted);font-size:13px;line-height:1.45;">
+          Проверьте товары и количество. Итог считается автоматически.
+        </div>
+
+        <div id="orderList" style="margin-top:12px;"></div>
+
+        <div class="sumRow"><span>Товаров:</span><strong id="itemsCount">0</strong></div>
+        <div class="sumRow"><span>Итого:</span><strong id="total">0 ₸</strong></div>
+
+        <div class="actionsRow">
+          <button class="btn danger" id="clearCheckout" type="button">Очистить</button>
+          <button class="btn" id="backToShop" type="button">← В магазин</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 style="margin:0 0 10px;font-size:18px;">📦 Данные для доставки</h2>
+        <div style="color:var(--muted);font-size:13px;line-height:1.45;">
+          Заполните форму и нажмите «Подтвердить заказ». (Учебная демо-версия)
+        </div>
+
+        <form id="checkoutForm" style="margin-top:10px;">
+          <div class="grid2">
+            <div>
+              <label>Имя</label>
+              <input required name="name" placeholder="Например: Айбек" />
+            </div>
+            <div>
+              <label>Телефон</label>
+              <input required name="phone" placeholder="+7 (___) ___-__-__" />
+            </div>
+            <div class="full">
+              <label>Адрес</label>
+              <input required name="address" placeholder="Город, улица, дом, квартира" />
+            </div>
+            <div>
+              <label>Способ оплаты</label>
+              <select name="pay">
+                <option>Наличными при получении</option>
+                <option>Картой курьеру</option>
+                <option>Онлайн перевод</option>
+              </select>
+            </div>
+            <div>
+              <label>Время доставки</label>
+              <select name="time">
+                <option>В течение дня</option>
+                <option>10:00–13:00</option>
+                <option>13:00–16:00</option>
+                <option>16:00–19:00</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>Комментарий (необязательно)</label>
+              <textarea name="comment" placeholder="Например: позвонить за 10 минут"></textarea>
+            </div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn primary" type="submit">✅ Подтвердить заказ</button>
+          </div>
+
+          <div style="color:rgba(233,240,255,.55);font-size:12px;line-height:1.4;margin-top:10px;">
+            * Заказ не отправляется в интернет — показывается подтверждение и корзина очищается.
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <footer style="text-align:center;color:rgba(233,240,255,.55);padding:18px 0 0;">
+      © 2026 FreshMilk Market
+    </footer>
+  </section>
+</main>
+
+<div class="toast" id="toast">Добавлено в корзину ✅</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Корзина">
+  <div class="drawerHeader">
+    <h3>🛒 Корзина</h3>
+    <button class="btn" id="closeCartBtn" type="button">Закрыть</button>
+  </div>
+
+  <div class="drawerBody" id="cartList"></div>
+
+  <div class="drawerFooter">
+    <div class="sumRow"><span>Итого:</span><strong id="cartTotal">0 ₸</strong></div>
+    <div class="footerBtns">
+      <button class="btn danger" id="clearCartBtn" type="button">Очистить</button>
+      <button class="btn primary" id="goCheckoutBtn" type="button">Оформить</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  // Данные товаров (картинки онлайн). Если хочешь офлайн — заменим на img/...
+  const products = [
+    { id:"milk", name:"Молоко пастеризованное", price:450, unit:"1 л", tag:"Хит",
+      desc:"Свежий вкус и нежная текстура.",
+      image:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"butter", name:"Сливочное масло", price:980, unit:"180 г", tag:"Классика",
+      desc:"Натуральное масло из сливок.",
+      image:"https://images.unsplash.com/photo-1589987607627-9a63d1d6b44a?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"sourcream", name:"Сметана", price:650, unit:"400 г", tag:"Домашняя",
+      desc:"Густая и нежная.",
+      image:"https://images.unsplash.com/photo-1604908176997-431f8e6c5c1d?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"kefir", name:"Кефир", price:430, unit:"1 л", tag:"Фреш",
+      desc:"Полезный кисломолочный напиток.",
+      image:"https://images.unsplash.com/photo-1576186726115-4d51596775d1?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"yogurt", name:"Йогурт", price:420, unit:"300 г", tag:"Натурально",
+      desc:"Нежный ферментированный продукт.",
+      image:"https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"brynza", name:"Брынза", price:1100, unit:"350 г", tag:"Салаты",
+      desc:"Рассольный сыр для салатов.",
+      image:"https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"ryazhenka", name:"Ряженка", price:470, unit:"500 мл", tag:"Топлёное",
+      desc:"Мягкий карамельный вкус.",
+      image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"milkshake", name:"Молочный коктейль", price:590, unit:"450 мл", tag:"Десерт",
+      desc:"Сладкий сливочный напиток.",
+      image:"https://images.unsplash.com/photo-1577801593823-7d7a7b66f3aa?auto=format&fit=crop&w=1200&q=70" },
+
+    { id:"cottage", name:"Творог", price:750, unit:"400 г", tag:"Белок",
+      desc:"Идеально к чаю и кофе.",
+      image:"https://images.unsplash.com/photo-1604908177522-4021b9bbfc7b?auto=format&fit=crop&w=1200&q=70" },
+  ];
+
+  // LocalStorage cart
+  const LS_KEY = "freshmilk_cart_singlefile_v1";
+  function loadCart(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return new Map();
+      const obj = JSON.parse(raw);
+      const m = new Map();
+      for(const [k,v] of Object.entries(obj)){
+        const n = Number(v);
+        if(Number.isFinite(n) && n > 0) m.set(k, n);
+      }
+      return m;
+    }catch{ return new Map(); }
+  }
+  function saveCart(cart){
+    const obj = {};
+    cart.forEach((qty, id) => obj[id] = qty);
+    localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  }
+
+  const cart = loadCart();
+
+  // DOM
+  const pageShop = document.getElementById("pageShop");
+  const pageCheckout = document.getElementById("pageCheckout");
+  const subtitle = document.getElementById("subtitle");
+
+  const tabShop = document.getElementById("tabShop");
+  const tabCheckout = document.getElementById("tabCheckout");
+
+  const grid = document.getElementById("productGrid");
+  const resultInfo = document.getElementById("resultInfo");
+
+  const cartCount = document.getElementById("cartCount");
+  const cartList = document.getElementById("cartList");
+  const cartTotal = document.getElementById("cartTotal");
+
+  const overlay = document.getElementById("overlay");
+  const drawer = document.getElementById("drawer");
+  const openCartBtn = document.getElementById("openCartBtn");
+  const closeCartBtn = document.getElementById("closeCartBtn");
+  const clearCartBtn = document.getElementById("clearCartBtn");
+  const goCheckoutBtn = document.getElementById("goCheckoutBtn");
+
+  const toast = document.getElementById("toast");
+
+  // Checkout DOM
+  const orderList = document.getElementById("orderList");
+  const itemsCount = document.getElementById("itemsCount");
+  const totalEl = document.getElementById("total");
+  const clearCheckout = document.getElementById("clearCheckout");
+  const backToShop = document.getElementById("backToShop");
+  const checkoutForm = document.getElementById("checkoutForm");
+
+  // Helpers
+  const money = n => new Intl.NumberFormat("ru-RU").format(n);
+
+  function showToast(text){
+    toast.textContent = text;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toast.classList.remove("show"), 1200);
+  }
+
+  function getCartCount(){
+    let sum = 0; cart.forEach(q => sum += q); return sum;
+  }
+  function getCartTotal(){
+    let sum = 0;
+    cart.forEach((q, id) => {
+      const p = products.find(x => x.id === id);
+      if(p) sum += p.price * q;
+    });
+    return sum;
+  }
+
+  // Render shop
+  function renderProducts(){
+    grid.innerHTML = "";
+    products.forEach(p => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="thumb">
+          <img loading="lazy" src="${p.image}" alt="${p.name}">
+          <div class="tag">${p.tag}</div>
+        </div>
+        <div class="content">
+          <div>
+            <h4>${p.name}</h4>
+            <p>${p.desc}</p>
+          </div>
+          <div class="row">
+            <div>
+              <div class="price">${money(p.price)} ₸</div>
+              <div class="meta">${p.unit}</div>
+            </div>
+            <button class="btn primary" data-add="${p.id}" type="button">Купить</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    resultInfo.textContent = `Показано: ${products.length}`;
+  }
+
+  // Render drawer cart
+  function updateCartUI(){
+    cartCount.textContent = String(getCartCount());
+    cartTotal.textContent = `${money(getCartTotal())} ₸`;
+
+    const items = Array.from(cart.entries());
+    if(items.length === 0){
+      cartList.innerHTML = `
+        <div style="padding:12px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(255,255,255,.05);">
+          <strong>Корзина пустая</strong>
+          <p style="margin:8px 0 0;color:var(--muted);line-height:1.45;font-size:13px;">
+            Нажми «Купить» на любом товаре.
+          </p>
+        </div>
+      `;
+    } else {
+      cartList.innerHTML = "";
+      items.forEach(([id, qty]) => {
+        const p = products.find(x => x.id === id);
+        if(!p) return;
+        const div = document.createElement("div");
+        div.className = "cartItem";
+        div.innerHTML = `
+          <img loading="lazy" src="${p.image}" alt="${p.name}">
+          <div>
+            <div class="ciTitle">${p.name}</div>
+            <div class="ciSub">${money(p.price)} ₸ • ${p.unit}</div>
+            <button class="btn danger" style="margin-top:8px;padding:7px 10px;border-radius:12px;"
+                    data-remove="${p.id}" type="button">Удалить</button>
+          </div>
+          <div class="qty">
+            <button type="button" data-dec="${p.id}">−</button>
+            <span>${qty}</span>
+            <button type="button" data-inc="${p.id}">+</button>
+          </div>
+        `;
+        cartList.appendChild(div);
+      });
+    }
+
+    saveCart(cart);
+    renderCheckout(); // чтобы на оформлении сразу обновлялось
+  }
+
+  // Cart actions
+  function addToCart(id){
+    cart.set(id, (cart.get(id) || 0) + 1);
+    updateCartUI();
+    showToast("Добавлено в корзину ✅");
+  }
+  function decFromCart(id){
+    const q = cart.get(id) || 0;
+    if(q <= 1) cart.delete(id);
+    else cart.set(id, q - 1);
+    updateCartUI();
+  }
+  function removeFromCart(id){
+    cart.delete(id);
+    updateCartUI();
+  }
+  function clearCart(){
+    cart.clear();
+    updateCartUI();
+    showToast("Корзина очищена 🧹");
+  }
+
+  // Drawer controls
+  function openCart(){ overlay.classList.add("show"); drawer.classList.add("show"); }
+  function closeCart(){ overlay.classList.remove("show"); drawer.classList.remove("show"); }
+
+  // Checkout render
+  function renderCheckout(){
+    const entries = Array.from(cart.entries());
+    let count = 0, total = 0;
+
+    if(entries.length === 0){
+      orderList.innerHTML = `<div style="color:var(--muted);margin-top:12px;">Корзина пустая. Добавьте товары в магазине.</div>`;
+      itemsCount.textContent = "0";
+      totalEl.textContent = "0 ₸";
+      return;
+    }
+
+    orderList.innerHTML = "";
+    for(const [id, qty] of entries){
+      const p = products.find(x => x.id === id);
+      if(!p) continue;
+      count += qty;
+      total += p.price * qty;
+
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <img loading="lazy" src="${p.image}" alt="${p.name}">
+        <div>
+          <div class="title">${p.name}</div>
+          <div class="sub">${p.unit} • ${money(p.price)} ₸</div>
+          <div class="sub">Количество: <strong style="color:var(--text)">${qty}</strong></div>
+        </div>
+        <div class="right">${money(p.price * qty)} ₸</div>
+      `;
+      orderList.appendChild(div);
+    }
+
+    itemsCount.textContent = String(count);
+    totalEl.textContent = `${money(total)} ₸`;
+  }
+
+  // Routing (one file)
+  function setPage(page){
+    const isCheckout = page === "checkout";
+    pageShop.classList.toggle("show", !isCheckout);
+    pageCheckout.classList.toggle("show", isCheckout);
+
+    tabShop.setAttribute("aria-current", !isCheckout ? "page" : "false");
+    tabCheckout.setAttribute("aria-current", isCheckout ? "page" : "false");
+
+    subtitle.textContent = isCheckout ? "Оформление заказа" : "Свежие молочные продукты каждый день";
+
+    if(isCheckout) renderCheckout();
+    window.location.hash = isCheckout ? "#checkout" : "#shop";
+  }
+
+  // Events
+  document.addEventListener("click", (e) => {
+    const addId = e.target?.dataset?.add;
+    const incId = e.target?.dataset?.inc;
+    const decId = e.target?.dataset?.dec;
+    const remId = e.target?.dataset?.remove;
+
+    if(addId) addToCart(addId);
+    if(incId) addToCart(incId);
+    if(decId) decFromCart(decId);
+    if(remId) removeFromCart(remId);
+  });
+
+  tabShop.addEventListener("click", () => setPage("shop"));
+  tabCheckout.addEventListener("click", () => setPage("checkout"));
+
+  openCartBtn.addEventListener("click", openCart);
+  closeCartBtn.addEventListener("click", closeCart);
+  overlay.addEventListener("click", closeCart);
+
+  clearCartBtn.addEventListener("click", clearCart);
+  goCheckoutBtn.addEventListener("click", () => { closeCart(); setPage("checkout"); });
+
+  clearCheckout.addEventListener("click", clearCart);
+  backToShop.addEventListener("click", () => setPage("shop"));
+
+  checkoutForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if(getCartCount() === 0){
+      alert("Корзина пустая. Добавьте товары перед оформлением.");
+      return;
+    }
+
+    const fd = new FormData(checkoutForm);
+    const name = fd.get("name");
+    const phone = fd.get("phone");
+    const address = fd.get("address");
+    const pay = fd.get("pay");
+    const time = fd.get("time");
+
+    const total = getCartTotal();
+
+    // Демо-подтверждение + очистка корзины
+    clearCart();
+    checkoutForm.reset();
+
+    alert(
+      `Заказ подтверждён ✅ (демо)\n\n` +
+      `Имя: ${name}\nТелефон: ${phone}\nАдрес: ${address}\n` +
+      `Оплата: ${pay}\nВремя: ${time}\n\n` +
+      `Сумма: ${money(total)} ₸`
+    );
+
+    setPage("shop");
+  });
+
+  // Init
+  renderProducts();
+  updateCartUI();
+
+  // Open correct page from hash
+  const initial = (location.hash || "#shop").toLowerCase();
+  if(initial.includes("checkout")) setPage("checkout");
+  else setPage("shop");
+</script>
+</body>
+</html>
