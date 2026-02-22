@@ -486,43 +486,89 @@
 
 <script>
   // Данные товаров (картинки онлайн). Если хочешь офлайн — заменим на img/...
-  const products = [
-    { id:"milk", name:"Молоко пастеризованное", price:450, unit:"1 л", tag:"Хит",
-      desc:"Свежий вкус и нежная текстура.",
-      image:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"butter", name:"Сливочное масло", price:980, unit:"180 г", tag:"Классика",
-      desc:"Натуральное масло из сливок.",
-      image:"https://images.unsplash.com/photo-1589987607627-9a63d1d6b44a?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"sourcream", name:"Сметана", price:650, unit:"400 г", tag:"Домашняя",
-      desc:"Густая и нежная.",
-      image:"https://images.unsplash.com/photo-1604908176997-431f8e6c5c1d?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"kefir", name:"Кефир", price:430, unit:"1 л", tag:"Фреш",
-      desc:"Полезный кисломолочный напиток.",
-      image:"https://images.unsplash.com/photo-1576186726115-4d51596775d1?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"yogurt", name:"Йогурт", price:420, unit:"300 г", tag:"Натурально",
-      desc:"Нежный ферментированный продукт.",
-      image:"https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"brynza", name:"Брынза", price:1100, unit:"350 г", tag:"Салаты",
-      desc:"Рассольный сыр для салатов.",
-      image:"https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"ryazhenka", name:"Ряженка", price:470, unit:"500 мл", tag:"Топлёное",
-      desc:"Мягкий карамельный вкус.",
-      image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"milkshake", name:"Молочный коктейль", price:590, unit:"450 мл", tag:"Десерт",
-      desc:"Сладкий сливочный напиток.",
-      image:"https://images.unsplash.com/photo-1577801593823-7d7a7b66f3aa?auto=format&fit=crop&w=1200&q=70" },
-
-    { id:"cottage", name:"Творог", price:750, unit:"400 г", tag:"Белок",
-      desc:"Идеально к чаю и кофе.",
-      image:"https://images.unsplash.com/photo-1604908177522-4021b9bbfc7b?auto=format&fit=crop&w=1200&q=70" },
-  ];
+ const products = [
+  {
+    id:"milk",
+    name:"Молоко пастеризованное",
+    price:450,
+    unit:"1 л",
+    tag:"Хит",
+    desc:"Свежий вкус и нежная текстура.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Milk_glass.jpg/800px-Milk_glass.jpg"
+  },
+  {
+    id:"butter",
+    name:"Сливочное масло",
+    price:980,
+    unit:"180 г",
+    tag:"Классика",
+    desc:"Натуральное масло из сливок.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/4/45/Butter.jpg"
+  },
+  {
+    id:"sourcream",
+    name:"Сметана",
+    price:650,
+    unit:"400 г",
+    tag:"Домашняя",
+    desc:"Густая и нежная.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/3/3b/Sour_cream.jpg"
+  },
+  {
+    id:"kefir",
+    name:"Кефир",
+    price:430,
+    unit:"1 л",
+    tag:"Фреш",
+    desc:"Полезный кисломолочный напиток.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/3/3f/Kefir.jpg"
+  },
+  {
+    id:"yogurt",
+    name:"Йогурт",
+    price:420,
+    unit:"300 г",
+    tag:"Натурально",
+    desc:"Нежный ферментированный продукт.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/3/32/Yogurt.jpg"
+  },
+  {
+    id:"brynza",
+    name:"Брынза",
+    price:1100,
+    unit:"350 г",
+    tag:"Салаты",
+    desc:"Рассольный сыр для салатов.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/5/5d/Brynza.jpg"
+  },
+  {
+    id:"ryazhenka",
+    name:"Ряженка",
+    price:470,
+    unit:"500 мл",
+    tag:"Топлёное",
+    desc:"Мягкий карамельный вкус.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/7/7f/Ryazhenka.jpg"
+  },
+  {
+    id:"milkshake",
+    name:"Молочный коктейль",
+    price:590,
+    unit:"450 мл",
+    tag:"Десерт",
+    desc:"Сладкий сливочный напиток.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/0/0b/Milkshake.jpg"
+  },
+  {
+    id:"cottage",
+    name:"Творог",
+    price:750,
+    unit:"400 г",
+    tag:"Белок",
+    desc:"Идеально к чаю и кофе.",
+    image:"https://upload.wikimedia.org/wikipedia/commons/3/3d/Cottage_cheese.jpg"
+  }
+];
 
   // LocalStorage cart
   const LS_KEY = "freshmilk_cart_singlefile_v1";
@@ -821,3 +867,4 @@
 </script>
 </body>
 </html>
+
